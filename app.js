@@ -122,14 +122,24 @@ window.onerror = function(message, source, lineno, colno, error) {
 
 // CSS for drops
 const style = document.createElement('style');
-style.textContent = `
-    .drop {
-        position: absolute;
-        width: 10px;
-        height: 10px;
-        background-color: gold;
-        border-radius: 50%;
-        opacity: 0.7;
+style.textContent = 
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: purple;
+        color: white;
     }
-`;
+    #counter {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+    #coinButton {
+        margin-top: 20px;
+    }
+;
 document.head.appendChild(style);
