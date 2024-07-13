@@ -53,7 +53,7 @@ function initApp() {
         const app = document.createElement('div');
         app.innerHTML = `
             <div id="counter">Coins: 0</div>
-            <img id="coinButton" src="https://i.postimg.cc/8CSnzB1T/Photo-1720905875371.png" alt="Click me!" style="cursor: pointer; width: 80%; max-width: 300px; height: auto;">
+            <img id="coinButton" src="https://i.postimg.cc/8CSnzB1T/Photo-1720905875371.png" alt="Click me!" style="cursor: pointer; width: 80%; max-width: 150px; height: auto;">
         `;
         document.body.appendChild(app);
 
