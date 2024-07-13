@@ -14,7 +14,7 @@
             height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #892DD6;
+            background-color: #C037DF;
         }
         #coinButton {
             width: 100px;
