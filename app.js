@@ -10,7 +10,7 @@ app.style.cssText = `
     justify-content: center;
     height: 100vh;
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    background-color: #C037DF;
 `;
 
 const counter = document.createElement('h1');
