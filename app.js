@@ -19,7 +19,7 @@ counter.textContent = 'Монет: 0';
 
 const coinButton = document.createElement('button');
 coinButton.id = 'coinButton';
-coinButton.textContent = '₿';
+coinButton.textContent = 'KONOPLECHKA';
 coinButton.style.cssText = `
     width: 100px;
     height: 100px;
