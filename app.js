@@ -53,7 +53,7 @@ function initApp() {
         const app = document.createElement('div');
         app.innerHTML = `
             <div id="counter">Coins: 0</div>
-            <img id="coinButton" src="/api/placeholder/200/200" alt="Click me!" style="cursor: pointer;">
+            <img id="coinButton" src="https://telegra.ph/file/1620a11a55b8c01edd60a.jpg" alt="Click me!" style="cursor: pointer;">
         `;
         document.body.appendChild(app);
 
