@@ -10,7 +10,6 @@ function log(message) {
 // Функция для сохранения счета в localStorage
 function saveCount(count) {
     localStorage.setItem('clickerCount', count);
-    savePlayerScore('Игрок', count); // Замените 'Игрок' на имя текущего игрока
 }
 
 // Функция для загрузки счета из localStorage
@@ -51,28 +50,6 @@ function createDrop(x, y) {
     requestAnimationFrame(animate);
 }
 
-// Функция для сохранения счета игрока
-function savePlayerScore(player, score) {
-    const scores = JSON.parse(localStorage.getItem('playerScores') || '{}');
-    scores[player] = score;
-    localStorage.setItem('playerScores', JSON.stringify(scores));
-}
-
-// Функция для загрузки счетов игроков
-function loadPlayerScores() {
-    return JSON.parse(localStorage.getItem('playerScores') || '{}');
-}
-
-// Функция для отображения списка игроков и их счета
-function showPlayerScores() {
-    const scores = loadPlayerScores();
-    let message = 'Список игроков и их счет:\n\n';
-    for (const player in scores) {
-        message += `${player}: ${scores[player]} coins\n`;
-    }
-    alert(message);
-}
-
 // Функция для инициализации приложения
 function initApp() {
     log('Initializing application...');
@@ -86,7 +63,6 @@ function initApp() {
         app.innerHTML = `
             <div id="counter">Coins: 0</div>
             <img id="coinButton" src="https://i.postimg.cc/8CSnzB1T/Photo-1720905875371.png" alt="Click me!" style="cursor: pointer; width: 80%; max-width: 300px; height: auto;">
-            <button id="showScoresButton">Показать счет игроков</button>
         `;
         app.style.display = 'flex';
         app.style.flexDirection = 'column';
@@ -99,7 +75,6 @@ function initApp() {
         let count = loadCount();
         const counter = document.getElementById('counter');
         const coinButton = document.getElementById('coinButton');
-        const showScoresButton = document.getElementById('showScoresButton');
         
         updateCounter(count);
 
@@ -139,12 +114,6 @@ function initApp() {
                 border-radius: 50%;
                 pointer-events: none;
             }
-            #showScoresButton {
-                margin-top: 20px;
-                padding: 10px 20px;
-                font-size: 16px;
-                cursor: pointer;
-            }
         `;
         document.head.appendChild(style);
 
@@ -170,9 +139,6 @@ function initApp() {
                 log('Error sending data: ' + error.message);
             }
         });
-
-        // Обработчик для кнопки "Показать счет игроков"
-        showScoresButton.addEventListener('click', showPlayerScores);
 
         // Инициализация Telegram Web App
         try {
