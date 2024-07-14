@@ -40,8 +40,8 @@ function createDrop(x, y) {
     const animate = () => {
         posY += 5; // Скорость падения
         drop.style.top = `${posY}px`;
-        drop.style.opacity = 1 - (posY - y) / 150;
-        if (posY < y + 150) { // Дистанция падения
+        drop.style.opacity = 1 - (posY - y) / 100;
+        if (posY < y + 100) { // Дистанция падения
             requestAnimationFrame(animate);
         } else {
             document.body.removeChild(drop);
@@ -64,7 +64,7 @@ function initApp() {
             <div id="counter">Coins: 0</div>
             <img id="coinButton" src="https://i.postimg.cc/8CSnzB1T/Photo-1720905875371.png" alt="Click me!" style="cursor: pointer; width: 80%; max-width: 300px; height: auto;">
         `;
-        app.style.display = 'block';
+        app.style.display = 'flex';
         app.style.flexDirection = 'column';
         app.style.alignItems = 'center';
         app.style.justifyContent = 'center';
@@ -82,7 +82,7 @@ function initApp() {
         const style = document.createElement('style');
         style.textContent = `
             body {
-                display: block;
+                display: flex;
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
@@ -104,7 +104,7 @@ function initApp() {
             }
             #coinButton:active {
                 transform: scale(1.2); /* Анимация увеличения */
-                filter: block; /* Убирает полупрозрачный эффект */
+                filter: black; /* Убирает полупрозрачный эффект */
             }
             .drop {
                 position: absolute;
