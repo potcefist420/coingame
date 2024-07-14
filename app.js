@@ -64,7 +64,7 @@ function initApp() {
             <div id="counter">Coins: 0</div>
             <img id="coinButton" src="https://i.postimg.cc/8CSnzB1T/Photo-1720905875371.png" alt="Click me!" style="cursor: pointer; width: 80%; max-width: 300px; height: auto;">
         `;
-        app.style.display = 'flex';
+        app.style.display = 'block';
         app.style.flexDirection = 'column';
         app.style.alignItems = 'center';
         app.style.justifyContent = 'center';
@@ -104,13 +104,13 @@ function initApp() {
             }
             #coinButton:active {
                 transform: scale(1.2); /* Анимация увеличения */
-                filter: none; /* Убирает полупрозрачный эффект */
+                filter: block; /* Убирает полупрозрачный эффект */
             }
             .drop {
                 position: absolute;
-                width: 10px; /* Размер частицы */
-                height: 10px; /* Размер частицы */
-                background-color: gold; /* Цвет частицы */
+                width: 20px; /* Размер частицы */
+                height: 20px; /* Размер частицы */
+                background-color: silver; /* Цвет частицы */
                 border-radius: 50%;
                 pointer-events: none;
             }
