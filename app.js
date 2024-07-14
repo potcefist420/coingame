@@ -37,7 +37,7 @@ counter.textContent = 'Монет: 0';
 
 const coinButton = document.createElement('button');
 coinButton.id = 'coinButton';
-coinButton.textContent = '₴$';
+coinButton.textContent = '₴';
 coinButton.style.cssText = `
     width: 100px;
     height: 100px;
