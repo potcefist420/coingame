@@ -1,33 +1,60 @@
-<?php
-// Замените на свой токен бота
-define('BOT_TOKEN, '6941115045:AAEfC22K5El2_ggic4X91EVKLPIGEOz-Oto);
+header('Content-Type: text/html; charset=utf-8'); // на всякий случай досообщим PHP, что все в кодировке UTF-8
 
-// Получение входящего обновления от Telegram
-$content = file_get_contents("php://input");
-$update = json_decode($content, true);
+$site_dir = dirname(dirname(__FILE__)).'/'; // корень сайта
+$bot_token = '1234567899:6941115045:AAEfC22K5El2_ggic4X91EVKLPIGEOz-Oto'; // токен вашего бота
+$data = file_get_contents('php://input'); // весь ввод перенаправляем в $data
+$data = json_decode($data, true); // декодируем json-закодированные-текстовые данные в PHP-массив
 
-// Если обновление не получено, завершаем выполнение скрипта
-if (!$update) {
-    exit("No data received from Telegram.");
+// Для отладки, добавим запись полученных декодированных данных в файл message.txt, 
+// который можно смотреть и понимать, что происходит при запросе к боту
+// Позже, когда все будет работать закомментируйте эту строку:
+file_put_contents(__DIR__ . '/message.txt', print_r($data, true));
+
+// Основной код: получаем сообщение, что юзер отправил боту и 
+// заполняем переменные для дальнейшего использования
+if (!empty($data['message']['text'])) {
+    $chat_id = $data['message']['from']['id'];
+    $user_name = $data['message']['from']['username'];
+    $first_name = $data['message']['from']['first_name'];
+    $last_name = $data['message']['from']['last_name'];
+    $text = trim($data['message']['text']);
+    $text_array = explode(" ", $text);
+    
+    if ($text == '/help') {
+        $text_return = "Привет, $first_name $last_name, вот команды, что я понимаю: 
+/help - список команд
+/about - о нас
+";
+        message_to_telegram($bot_token, $chat_id, $text_return);
+    }
+    elseif ($text == '/about') {
+        $text_return = "verysimple_bot:
+Я пример самого простого бота для телеграм, написанного на простом PHP.
+Мой код можно скачивать, дополнять, исправлять. Код доступен в этой статье:
+https://www.novelsite.ru/kak-sozdat-prostogo-bota-dlya-telegram-na-php.html
+";
+        message_to_telegram($bot_token, $chat_id, $text_return);
+    }
+
 }
 
-// Извлечение данных из обновления
-$message = isset($update['message']) ? $update['message'] : null;
-$chat_id = isset($message['chat']['id']) ? $message['chat']['id'] : null;
-$text = isset($message['text']) ? $message['text'] : '';
+// функция отправки сообщени в от бота в диалог с юзером
+function message_to_telegram($bot_token, $chat_id, $text, $reply_markup = '')
+{
+    $ch = curl_init();
+    $ch_post = [
+        CURLOPT_URL => 'https://api.telegram.org/bot' . $bot_token . '/sendMessage',
+        CURLOPT_POST => TRUE,
+        CURLOPT_RETURNTRANSFER => TRUE,
+        CURLOPT_TIMEOUT => 10,
+        CURLOPT_POSTFIELDS => [
+            'chat_id' => $chat_id,
+            'parse_mode' => 'HTML',
+            'text' => $text,
+            'reply_markup' => $reply_markup,
+        ]
+    ];
 
-// Обработка команды /start
-if ($text == '/start') {
-    $response = "Привет! Это пример бота на PHP.";
-    sendMessage($chat_id, $response);
+    curl_setopt_array($ch, $ch_post);
+    curl_exec($ch);
 }
-
-// Функция для отправки сообщения пользователю через API Telegram
-function sendMessage($chat_id, $text) {
-    $url = "https://api.telegram.org/bot" . BOT_TOKEN . "/sendMessage?chat_id=$chat_id&text=" . urlencode($text);
-    file_get_contents($url);
-}
-
-// Логирование входящего обновления (для отладки)
-file_put_contents('log.txt', $content . PHP_EOL, FILE_APPEND | LOCK_EX);
-?>
