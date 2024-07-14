@@ -98,6 +98,10 @@ function initApp() {
             }
             #coinButton {
                 margin-top: 20px;
+                outline: none;
+            }
+            #coinButton:active {
+                filter: none; /* Remove blue semi-transparent effect */
             }
             .drop {
                 position: absolute;
