@@ -41,7 +41,7 @@ function createDrop(x, y) {
         posY += 5; // Скорость падения
         drop.style.top = `${posY}px`;
         drop.style.opacity = 1 - (posY - y) / 100;
-        if (posY < y + 100) { // Дистанция падения
+        if (posY < y + 150) { // Дистанция падения
             requestAnimationFrame(animate);
         } else {
             document.body.removeChild(drop);
