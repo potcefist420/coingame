@@ -118,24 +118,29 @@ function initApp() {
         document.head.appendChild(style);
 
         // Создание аудиоэлемента для звука монеты
-        const coinSound = new Audio('https://potcefist420.github.io/coingame/collectcoin-6075.mp3'); // Замените на актуальный URL звука
+        // Создание аудиоэлемента для звука монеты
+const coinSoundURL = 'https://potcefist420.github.io/coingame/collectcoin-6075.mp3';
 
-        coinButton.addEventListener('click', (event) => {
-            count++;
-            updateCounter(count);
-            log(`Click! Current count: ${count}`);
-            saveCount(count);
-            createDrop(event.clientX, event.clientY);
-            coinSound.play();
+coinButton.addEventListener('click', (event) => {
+    count++;
+    updateCounter(count);
+    log(`Click! Current count: ${count}`);
+    saveCount(count);
+    createDrop(event.clientX, event.clientY);
+    
+    // Создание и воспроизведение нового аудиоэлемента
+    const coinSound = new Audio(coinSoundURL);
+    coinSound.play();
 
-            // Попытка отправить данные в Telegram
-            try {
-                tg.sendData(JSON.stringify({ action: 'click', count: count }));
-                log('Data sent to Telegram');
-            } catch (error) {
-                log('Error sending data: ' + error.message);
-            }
-        });
+    // Попытка отправить данные в Telegram
+    try {
+        tg.sendData(JSON.stringify({ action: 'click', count: count }));
+        log('Data sent to Telegram');
+    } catch (error) {
+        log('Error sending data: ' + error.message);
+    }
+});
+
 
         // Инициализация Telegram Web App
         try {
