@@ -82,7 +82,7 @@ function initApp() {
         const style = document.createElement('style');
         style.textContent = `
             body {
-                display: flex;
+                display: block;
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
