@@ -66,9 +66,9 @@ const style = document.createElement('style');
 style.textContent = `
     .particle {
         position: absolute;
-        width: 10px;
-        height: 10px;
-        background-color: gold;
+        width: 20px;
+        height: 20px;
+        background-color: silver;
         border-radius: 50%;
         animation: particleAnimation 1s ease-out forwards;
     }
