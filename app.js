@@ -10,7 +10,8 @@ function log(message) {
 // Функция для сохранения счета в localStorage
 function saveCount(count) {
     localStorage.setItem('clickerCount', count);
-    savePlayerScore('Игрок', count); // Замените 'Игрок' на имя текущего игрока
+    const playerName = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.username || tg.initDataUnsafe.user.first_name : 'Player';
+    savePlayerScore(playerName, count);
 }
 
 // Функция для загрузки счета из localStorage
