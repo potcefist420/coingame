@@ -18,36 +18,24 @@ function loadCount() {
 }
 
 // Function to create a drop element
-function createDrop(x, y) {
+function createDrop() {
     const drop = document.createElement('div');
     drop.className = 'drop';
-    drop.style.left = ${x}px;
-    drop.style.top = ${y}px;
+    drop.style.left = `${Math.random() * 100}%`;
     document.body.appendChild(drop);
-
-    let posY = y;
+    
+    // Animate the drop
+    let position = 0;
     const animate = () => {
-        posY += 5;
-        drop.style.top = ${posY}px;
-        drop.style.opacity = 1 - (posY - y) / 100;
-        if (posY < y + 100) {
-            requestAnimationFrame(animate);
-        } else {
+        if (position >= window.innerHeight) {
             document.body.removeChild(drop);
+        } else {
+            position += 2;
+            drop.style.top = `${position}px`;
+            requestAnimationFrame(animate);
         }
     };
     requestAnimationFrame(animate);
-}
-
-// Function to update the counter with animation
-function updateCounter(newCount) {
-    const counter = document.getElementById('counter');
-    counter.style.transform = 'scale(1.2)';
-    counter.style.transition = 'transform 0.2s';
-    counter.textContent = Coins: ${newCount};
-    setTimeout(() => {
-        counter.style.transform = 'scale(1)';
-    }, 200);
 }
 
 // Function to initialize the application
@@ -63,27 +51,24 @@ function initApp() {
 
         // Create simple interface
         const app = document.createElement('div');
-        app.innerHTML = 
+        app.innerHTML = `
             <div id="counter">Coins: 0</div>
-            <img id="coinButton" src="https://i.postimg.cc/8CSnzB1T/Photo-1720905875371.png" alt="Click me!" style="cursor: pointer; width: 80%; max-width: 300px; height: auto;">
-        ;
+            <img id="coinButton" src="/api/placeholder/200/200" alt="Click me!" style="cursor: pointer;">
+        `;
         document.body.appendChild(app);
 
         let count = loadCount();
         const counter = document.getElementById('counter');
         const coinButton = document.getElementById('coinButton');
         
-        counter.textContent = Coins: ${count};
+        counter.textContent = `Coins: ${count}`;
 
-        const coinSound = new Audio('https://example.com/coin-sound.mp3'); // Замените на реальный URL звука
-
-        coinButton.addEventListener('click', (event) => {
-            count += 1;
-            updateCounter(count);
-            log(Click! Current count: ${count});
+        coinButton.addEventListener('click', () => {
+            count++;
+            counter.textContent = `Coins: ${count}`;
+            log(`Click! Current count: ${count}`);
             saveCount(count);
-            createDrop(event.clientX, event.clientY);
-            coinSound.play();
+            createDrop();
 
             // Attempt to send data to Telegram
             try {
@@ -94,37 +79,18 @@ function initApp() {
             }
         });
 
-        document.addEventListener('keydown', (event) => {
-            if (event.key === '-') {
-                count -= 3;
-                if (count < 0) count = 0;
-                updateCounter(count);
-                log(Key press! Current count: ${count});
-                saveCount(count);
-
-                // Attempt to send data to Telegram
-                try {
-                    tg.sendData(JSON.stringify({ action: 'keyPress', count: count }));
-                    log('Data sent to Telegram');
-                } catch (error) {
-                    log('Error sending data: ' + error.message);
-                }
-            }
-        });
-
         // Initialize Telegram Web App
         try {
             tg.ready();
             log('Telegram Web App ready');
 
-𝔚𝔢𝔰𝔱 ℭ𝔬𝔞𝔰𝔱, [14.07.2024 0:54]
-// Show welcome message on /start command
+            // Show welcome message on /start command
             tg.onEvent('viewportChanged', () => {
                 if (tg.initDataUnsafe.start_param === 'start') {
                     tg.showPopup({
                         title: 'Welcome!',
                         message: 'Welcome to the Clicker Game! Click the image to earn coins.',
-                        buttons: [{ text: 'Start Playing', type: 'ok' }]
+                        buttons: [{text: 'Start Playing', type: 'ok'}]
                     });
                 }
             });
@@ -156,32 +122,14 @@ window.onerror = function(message, source, lineno, colno, error) {
 
 // CSS for drops
 const style = document.createElement('style');
-style.textContent = 
-    body {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background-color: purple;
-        color: white;
-    }
-    #counter {
-        font-size: 24px;
-        margin-bottom: 20px;
-    }
-    #coinButton {
-        margin-top: 20px;
-    }
+style.textContent = `
     .drop {
         position: absolute;
         width: 10px;
         height: 10px;
         background-color: gold;
         border-radius: 50%;
-        pointer-events: none;
+        opacity: 0.7;
     }
-;
+`;
 document.head.appendChild(style);
