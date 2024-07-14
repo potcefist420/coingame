@@ -39,8 +39,8 @@ const coinButton = document.createElement('button');
 coinButton.id = 'coinButton';
 coinButton.textContent = '₴';
 coinButton.style.cssText = `
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     background-color: #ffd700;
     border: none;
