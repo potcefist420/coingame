@@ -1,21 +1,3 @@
-// Function for logging
-function log(message) {
-    console.log(message);
-    const logElement = document.getElementById('log');
-    if (logElement) {
-        logElement.innerHTML += message + '<br>';
-    }
-}
-
-// Function to save count to localStorage
-function saveCount(count) {
-    localStorage.setItem('clickerCount', count);
-}
-
-// Function to load count from localStorage
-function loadCount() {
-    return parseInt(localStorage.getItem('clickerCount') || '0');
-}
 // Инициализация Telegram Web App
 const tg = window.Telegram.WebApp;
 
