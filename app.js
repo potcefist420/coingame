@@ -99,9 +99,11 @@ function initApp() {
             #coinButton {
                 margin-top: 20px;
                 outline: none;
+                transition: transform 0.2s;
             }
             #coinButton:active {
-                filter: none; /* Remove blue semi-transparent effect */
+                transform: scale(1.2); /* Add animation */
+                filter: none; /* Remove semi-transparent effect */
             }
             .drop {
                 position: absolute;
