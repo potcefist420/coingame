@@ -10,6 +10,7 @@ function log(message) {
 // Функция для сохранения счета в localStorage
 function saveCount(count) {
     localStorage.setItem('clickerCount', count);
+    savePlayerScore('Игрок', count); // Замените 'Игрок' на имя текущего игрока
 }
 
 // Функция для загрузки счета из localStorage
@@ -41,13 +42,35 @@ function createDrop(x, y) {
         posY += 5; // Скорость падения
         drop.style.top = `${posY}px`;
         drop.style.opacity = 1 - (posY - y) / 100;
-        if (posY < y + 150) { // Дистанция падения
+        if (posY < y + 100) { // Дистанция падения
             requestAnimationFrame(animate);
         } else {
             document.body.removeChild(drop);
         }
     };
     requestAnimationFrame(animate);
+}
+
+// Функция для сохранения счета игрока
+function savePlayerScore(player, score) {
+    const scores = JSON.parse(localStorage.getItem('playerScores') || '{}');
+    scores[player] = score;
+    localStorage.setItem('playerScores', JSON.stringify(scores));
+}
+
+// Функция для загрузки счетов игроков
+function loadPlayerScores() {
+    return JSON.parse(localStorage.getItem('playerScores') || '{}');
+}
+
+// Функция для отображения списка игроков и их счета
+function showPlayerScores() {
+    const scores = loadPlayerScores();
+    let message = 'Список игроков и их счет:\n\n';
+    for (const player in scores) {
+        message += `${player}: ${scores[player]} coins\n`;
+    }
+    alert(message);
 }
 
 // Функция для инициализации приложения
@@ -63,6 +86,7 @@ function initApp() {
         app.innerHTML = `
             <div id="counter">Coins: 0</div>
             <img id="coinButton" src="https://i.postimg.cc/8CSnzB1T/Photo-1720905875371.png" alt="Click me!" style="cursor: pointer; width: 80%; max-width: 300px; height: auto;">
+            <button id="showScoresButton">Показать счет игроков</button>
         `;
         app.style.display = 'flex';
         app.style.flexDirection = 'column';
@@ -75,6 +99,7 @@ function initApp() {
         let count = loadCount();
         const counter = document.getElementById('counter');
         const coinButton = document.getElementById('coinButton');
+        const showScoresButton = document.getElementById('showScoresButton');
         
         updateCounter(count);
 
@@ -104,43 +129,50 @@ function initApp() {
             }
             #coinButton:active {
                 transform: scale(1.2); /* Анимация увеличения */
-                filter: black; /* Убирает полупрозрачный эффект */
+                filter: none; /* Убирает полупрозрачный эффект */
             }
             .drop {
                 position: absolute;
-                width: 20px; /* Размер частицы */
-                height: 20px; /* Размер частицы */
-                background-color: silver; /* Цвет частицы */
+                width: 10px; /* Размер частицы */
+                height: 10px; /* Размер частицы */
+                background-color: gold; /* Цвет частицы */
                 border-radius: 50%;
                 pointer-events: none;
+            }
+            #showScoresButton {
+                margin-top: 20px;
+                padding: 10px 20px;
+                font-size: 16px;
+                cursor: pointer;
             }
         `;
         document.head.appendChild(style);
 
         // Создание аудиоэлемента для звука монеты
-        // Создание аудиоэлемента для звука монеты
-const coinSoundURL = 'https://potcefist420.github.io/coingame/collectcoin-6075.mp3';
+        const coinSoundURL = 'https://potcefist420.github.io/coingame/collectcoin-6075.mp3';
 
-coinButton.addEventListener('click', (event) => {
-    count++;
-    updateCounter(count);
-    log(`Click! Current count: ${count}`);
-    saveCount(count);
-    createDrop(event.clientX, event.clientY);
-    
-    // Создание и воспроизведение нового аудиоэлемента
-    const coinSound = new Audio(coinSoundURL);
-    coinSound.play();
+        coinButton.addEventListener('click', (event) => {
+            count++;
+            updateCounter(count);
+            log(`Click! Current count: ${count}`);
+            saveCount(count);
+            createDrop(event.clientX, event.clientY);
+            
+            // Создание и воспроизведение нового аудиоэлемента
+            const coinSound = new Audio(coinSoundURL);
+            coinSound.play();
 
-    // Попытка отправить данные в Telegram
-    try {
-        tg.sendData(JSON.stringify({ action: 'click', count: count }));
-        log('Data sent to Telegram');
-    } catch (error) {
-        log('Error sending data: ' + error.message);
-    }
-});
+            // Попытка отправить данные в Telegram
+            try {
+                tg.sendData(JSON.stringify({ action: 'click', count: count }));
+                log('Data sent to Telegram');
+            } catch (error) {
+                log('Error sending data: ' + error.message);
+            }
+        });
 
+        // Обработчик для кнопки "Показать счет игроков"
+        showScoresButton.addEventListener('click', showPlayerScores);
 
         // Инициализация Telegram Web App
         try {
