@@ -1,4 +1,4 @@
-// Function for logging
+// Функция для логирования
 function log(message) {
     console.log(message);
     const logElement = document.getElementById('log');
@@ -7,17 +7,17 @@ function log(message) {
     }
 }
 
-// Function to save count to localStorage
+// Функция для сохранения счета в localStorage
 function saveCount(count) {
     localStorage.setItem('clickerCount', count);
 }
 
-// Function to load count from localStorage
+// Функция для загрузки счета из localStorage
 function loadCount() {
     return parseInt(localStorage.getItem('clickerCount') || '0');
 }
 
-// Function to update counter with animation
+// Функция для обновления счетчика с анимацией
 function updateCounter(newCount) {
     const counter = document.getElementById('counter');
     counter.style.transform = 'scale(1.2)';
@@ -28,7 +28,7 @@ function updateCounter(newCount) {
     }, 200);
 }
 
-// Function to create a drop element
+// Функция для создания частицы
 function createDrop(x, y) {
     const drop = document.createElement('div');
     drop.className = 'drop';
@@ -38,10 +38,10 @@ function createDrop(x, y) {
 
     let posY = y;
     const animate = () => {
-        posY += 5;
+        posY += 5; // Скорость падения
         drop.style.top = `${posY}px`;
         drop.style.opacity = 1 - (posY - y) / 100;
-        if (posY < y + 100) {
+        if (posY < y + 100) { // Дистанция падения
             requestAnimationFrame(animate);
         } else {
             document.body.removeChild(drop);
@@ -50,7 +50,7 @@ function createDrop(x, y) {
     requestAnimationFrame(animate);
 }
 
-// Function to initialize the application
+// Функция для инициализации приложения
 function initApp() {
     log('Initializing application...');
 
@@ -58,7 +58,7 @@ function initApp() {
         log('Telegram Web App API detected');
         const tg = window.Telegram.WebApp;
 
-        // Create simple interface
+        // Создание простого интерфейса
         const app = document.createElement('div');
         app.innerHTML = `
             <div id="counter">Coins: 0</div>
@@ -78,7 +78,7 @@ function initApp() {
         
         updateCounter(count);
 
-        // Add styles
+        // Добавление стилей
         const style = document.createElement('style');
         style.textContent = `
             body {
@@ -100,24 +100,25 @@ function initApp() {
                 margin-top: 20px;
                 outline: none;
                 transition: transform 0.2s;
+                -webkit-tap-highlight-color: transparent; /* Убирает полупрозрачный прямоугольник */
             }
             #coinButton:active {
-                transform: scale(1.2); /* Add animation */
-                filter: none; /* Remove semi-transparent effect */
+                transform: scale(1.2); /* Анимация увеличения */
+                filter: none; /* Убирает полупрозрачный эффект */
             }
             .drop {
                 position: absolute;
-                width: 10px;
-                height: 10px;
-                background-color: gold;
+                width: 10px; /* Размер частицы */
+                height: 10px; /* Размер частицы */
+                background-color: gold; /* Цвет частицы */
                 border-radius: 50%;
                 pointer-events: none;
             }
         `;
         document.head.appendChild(style);
 
-        // Create audio element for coin sound
-        const coinSound = new Audio('https://potcefist420.github.io/coingame/collectcoin-6075.mp3'); // Replace with actual sound URL
+        // Создание аудиоэлемента для звука монеты
+        const coinSound = new Audio('https://potcefist420.github.io/coingame/collectcoin-6075.mp3'); // Замените на актуальный URL звука
 
         coinButton.addEventListener('click', (event) => {
             count++;
@@ -127,7 +128,7 @@ function initApp() {
             createDrop(event.clientX, event.clientY);
             coinSound.play();
 
-            // Attempt to send data to Telegram
+            // Попытка отправить данные в Telegram
             try {
                 tg.sendData(JSON.stringify({ action: 'click', count: count }));
                 log('Data sent to Telegram');
@@ -136,12 +137,12 @@ function initApp() {
             }
         });
 
-        // Initialize Telegram Web App
+        // Инициализация Telegram Web App
         try {
             tg.ready();
             log('Telegram Web App ready');
 
-            // Show welcome message on /start command
+            // Показать приветственное сообщение при команде /start
             tg.onEvent('viewportChanged', () => {
                 if (tg.initDataUnsafe.start_param === 'start') {
                     tg.showPopup({
@@ -156,7 +157,7 @@ function initApp() {
             log('Error initializing Telegram Web App: ' + error.message);
         }
 
-        // Try to expand the app to fullscreen
+        // Попытка развернуть приложение на весь экран
         try {
             tg.expand();
             log('App expanded to fullscreen');
@@ -168,10 +169,10 @@ function initApp() {
     }
 }
 
-// Start the app after page load
+// Запуск приложения после загрузки страницы
 window.addEventListener('load', initApp);
 
-// Handle errors
+// Обработка ошибок
 window.onerror = function(message, source, lineno, colno, error) {
     log('Global error: ' + message);
     return true;
