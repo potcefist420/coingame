@@ -105,7 +105,7 @@ function initApp() {
         document.head.appendChild(style);
 
         // Create audio element for coin sound
-        const coinSound = new Audio('https://potcefist420.github.io/coingame/coin-flip-88793.mp3'); // Replace with actual sound URL
+        const coinSound = new Audio('https://potcefist420.github.io/coingame/collectcoin-6075.mp3'); // Replace with actual sound URL
 
         coinButton.addEventListener('click', (event) => {
             count++;
