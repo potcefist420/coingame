@@ -64,6 +64,12 @@ function initApp() {
             <div id="counter">Coins: 0</div>
             <img id="coinButton" src="https://i.postimg.cc/8CSnzB1T/Photo-1720905875371.png" alt="Click me!" style="cursor: pointer; width: 80%; max-width: 300px; height: auto;">
         `;
+        app.style.display = 'flex';
+        app.style.flexDirection = 'column';
+        app.style.alignItems = 'center';
+        app.style.justifyContent = 'center';
+        app.style.height = '100vh';
+        app.style.width = '100%';
         document.body.appendChild(app);
 
         let count = loadCount();
