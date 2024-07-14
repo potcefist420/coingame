@@ -1,42 +1,33 @@
 <?php
-// Получение данных из Telegram
-$update = json_decode(file_get_contents('php://input'), true);
+// Замените на свой токен бота
+define('BOT_TOKEN, '6941115045:AAEfC22K5El2_ggic4X91EVKLPIGEOz-Oto);
 
-// Проверка, является ли запрос от Telegram
-if (isset($update['message'])) {
-    // Получение текста сообщения от пользователя
-    $message = $update['message']['text'];
+// Получение входящего обновления от Telegram
+$content = file_get_contents("php://input");
+$update = json_decode($content, true);
 
-    // Получение и обработка команды от пользователя
-    if ($message == '/start') {
-        // Отправка приветственного сообщения
-        sendMessage('Welcome to the Coin Clicker Game!');
-    } elseif ($message == '/score') {
-        // Получение и отправка списка игроков и их счетов
-        $playerScores = json_decode(file_get_contents('playerScores.json'), true);
-        $message = 'Список игроков и их счет:\n\n';
-        foreach ($playerScores as $player => $score) {
-            $message .= "$player: $score coins\n";
-        }
-        sendMessage($message);
-    } elseif (substr($message, 0, 5) == '/ref ') {
-        // Обработка команды на начисление реферальных бонусов
-        $referralCode = substr($message, 5);
-        processReferral($referralCode);
-    }
+// Если обновление не получено, завершаем выполнение скрипта
+if (!$update) {
+    exit("No data received from Telegram.");
 }
 
-// Функция отправки сообщения пользователю через Telegram API
-function sendMessage($text) {
-    $botToken = '6941115045:AAEfC22K5El2_ggic4X91EVKLPIGEOz-Oto'; // Ваш токен бота
-    $chatId = '5831984004'; // ID чата с пользователем
-    $url = "https://api.telegram.org/bot$botToken/sendMessage?chat_id=$chatId&text=" . urlencode($text);
+// Извлечение данных из обновления
+$message = isset($update['message']) ? $update['message'] : null;
+$chat_id = isset($message['chat']['id']) ? $message['chat']['id'] : null;
+$text = isset($message['text']) ? $message['text'] : '';
+
+// Обработка команды /start
+if ($text == '/start') {
+    $response = "Привет! Это пример бота на PHP.";
+    sendMessage($chat_id, $response);
+}
+
+// Функция для отправки сообщения пользователю через API Telegram
+function sendMessage($chat_id, $text) {
+    $url = "https://api.telegram.org/bot" . BOT_TOKEN . "/sendMessage?chat_id=$chat_id&text=" . urlencode($text);
     file_get_contents($url);
 }
 
-// Функция обработки реферальной системы
-function processReferral($referralCode) {
-    // Логика обработки реферального кода и начисления бонусов
-    // Например, обновление данных в базе данных или файле
-}
+// Логирование входящего обновления (для отладки)
+file_put_contents('log.txt', $content . PHP_EOL, FILE_APPEND | LOCK_EX);
 ?>
